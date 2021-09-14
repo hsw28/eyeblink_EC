@@ -1,0 +1,24 @@
+%LFPs
+
+%import your LFP by changing working directory to folder with file
+
+>> [timestamps, LFP] = getRawCSCData('LFP17.ncs', 1, 100000000);
+%index of start and index of end index.
+% since we dont know how many indices are in the file just put a bbig number for the second
+
+%your LFP file is now saved as LFP
+
+%we are now going to bandpass filter your LFP to bbetween 4-10hz. Your sample is 32hz
+%I coded this as a FIR filter with a blackman window, with order 300.
+
+>> LFPfilt = theta410(LFP);
+
+%you'll notice yourr filtered LFP is slightly shorter than unfiltered-- this is because it needs to be cropped because the filter window cant slide to the very edges
+
+% power is just your filtered LFP sqaured
+
+>> LFPpower = (LFPfilt).^2; %make sure you put the period there or else it'll do matrix algebra
+
+%if you want to plot it you can just do
+
+>> plot(length(LFPpower)./32000, LFPpower);  %here your x axis will be seconds starting at ~0s based just on the indices of LFPpower
